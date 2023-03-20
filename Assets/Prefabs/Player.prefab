@@ -169,10 +169,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundChecker: {fileID: 809979919}
+  Health: 0
   MaxHealth: 60
   walkSpr: {fileID: 21300000, guid: f99c7e4a025f53a41a4487c0c6852d07, type: 3}
   jumpSpr: {fileID: 21300000, guid: 92545703bd2a45d4b92a8bbddab1fa36, type: 3}
   level: {fileID: 0}
+  gameOver: {fileID: 0}
+  HealthCollected: 0
 --- !u!50 &3473285022625166056
 Rigidbody2D:
   serializedVersion: 4

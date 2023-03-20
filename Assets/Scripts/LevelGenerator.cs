@@ -43,7 +43,7 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
 
-        //spawn health pack 1(?) unit above top platform (last pos)
+        //spawn health pack 1 unit above top platform (last pos)
         Instantiate(HealthPotionPrefab, new Vector3(lastPos.x, lastPos.y + 1, 0), Quaternion.identity, transform);
     }
 

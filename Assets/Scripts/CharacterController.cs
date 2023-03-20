@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -36,8 +37,11 @@ public class CharacterController : MonoBehaviour {
     private SpriteRenderer spr;
 
     [SerializeField] private GameObject level;
+    [SerializeField] private TMP_Text gameOver;
 
     private float score = 0;
+
+    public int HealthCollected = 0;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -60,10 +64,10 @@ public class CharacterController : MonoBehaviour {
         if (rb.position.y > score) score = rb.position.y;
 
         Health -= Time.deltaTime * healthDecayMult;
-        Debug.Log("HP: " + Health);
 
         if (rb.position.y < -5 || Health < 0) {
-            Debug.Log("GAME OVER!!! SCORE: " + Mathf.FloorToInt(score));
+            gameOver.text = "SCORE: " + Mathf.FloorToInt(score);
+            Time.timeScale = 0;
         }
     }
 
@@ -118,6 +122,7 @@ public class CharacterController : MonoBehaviour {
             healthDecayMult += .2f;
             
             level.GetComponent<LevelGenerator>().SpawnNextSet();
+            HealthCollected++;
 
             Destroy(other.gameObject);
         }
