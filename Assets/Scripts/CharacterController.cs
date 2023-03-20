@@ -25,7 +25,7 @@ public class CharacterController : MonoBehaviour {
     private float move;
 
     //health
-    private float health;
+    public float Health;
     public float MaxHealth;
     private float healthDecayMult;
 
@@ -43,7 +43,7 @@ public class CharacterController : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         spr = GetComponent<SpriteRenderer>();
 
-        health = MaxHealth;
+        Health = MaxHealth;
         healthDecayMult = 1;
     }
 
@@ -59,10 +59,10 @@ public class CharacterController : MonoBehaviour {
 
         if (rb.position.y > score) score = rb.position.y;
 
-        health -= Time.deltaTime * healthDecayMult;
-        Debug.Log("HP: " + health);
+        Health -= Time.deltaTime * healthDecayMult;
+        Debug.Log("HP: " + Health);
 
-        if (rb.position.y < -5 || health < 0) {
+        if (rb.position.y < -5 || Health < 0) {
             Debug.Log("GAME OVER!!! SCORE: " + Mathf.FloorToInt(score));
         }
     }
@@ -114,7 +114,7 @@ public class CharacterController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Health") {
-            health = MaxHealth;
+            Health = MaxHealth;
             healthDecayMult += .2f;
             
             level.GetComponent<LevelGenerator>().SpawnNextSet();
