@@ -3,35 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour {
-    public GameObject smallPlatformPrefab;
-    public GameObject mediumPlatformPrefab;
-    public GameObject largePlatformPrefab;
+    public GameObject SmallPlatformPrefab;
+    public GameObject LargePlatformPrefab;
 
-    public float spawnTolerance; //maximum variation away from current platform
+    public GameObject HealthPotionPrefab;
 
-    private Vector3 lastPosition; //store position of most recently spawned platform
+    [SerializeField] private Vector2 HeightTolerance; //maximum variation above current platform
+    [SerializeField] private Vector2 WidthTolerance; //max variation adjacent to current platform
+    [SerializeField] private Vector2 WorldBounds; //width bounds of world
+    [SerializeField] private int MaxPlatforms; //maximum platforms in world at once
+
+    private Vector3 lastPos; //store position of most recently spawned platform
 
     void Start() {
         BeginGame();
     }
 
-    void Update() {
-        //listen for when next player step on platform is
-    }
-
     private void BeginGame() {
-        Instantiate(largePlatformPrefab, Vector3.zero, Quaternion.identity, transform);
+        lastPos = Vector3.zero;
+
+        SpawnNextSet();
     }
 
-    private void SpawnSmall(Vector3 position) {
+    public void SpawnNextSet() {
+        Instantiate(LargePlatformPrefab, Vector3.zero, Quaternion.identity, transform); //spawn one large base platform
 
+        //spawning max amt of platforms on screen at once
+        for (int i = 0; i < MaxPlatforms; i++) {
+            switch(Random.Range(0, 3)) {
+                case 0:
+                case 1:
+                    SpawnSmalls(new Vector3(Random.Range(WorldBounds.x + 1.5f, -1.5f), lastPos.y + Random.Range(HeightTolerance.x, HeightTolerance.y), 0),
+                                new Vector3(Random.Range(1.5f, WorldBounds.y - 1.5f), lastPos.y + Random.Range(HeightTolerance.x, HeightTolerance.y), 0));
+                    break;
+                case 2:
+                    SpawnLarge(new Vector3(Mathf.Clamp(Random.Range(WorldBounds.x + 5f, WorldBounds.y - 5f), lastPos.x + WidthTolerance.x, lastPos.x + WidthTolerance.y),
+                                lastPos.y + Random.Range(HeightTolerance.x, HeightTolerance.y), 0));
+                    break;
+            }
+        }
+
+        //spawn health pack 1(?) unit above top platform (last pos)
+        Instantiate(HealthPotionPrefab, new Vector3(lastPos.x, lastPos.y + 1, 0), Quaternion.identity, transform);
     }
 
-    private void SpawnMedium(Vector3 position) {
+    private void SpawnSmalls(Vector3 positionOne, Vector3 positionTwo) {
+        if (positionOne.y > positionTwo.y) {
+            lastPos = positionOne;
+        } else {
+            lastPos = positionTwo;
+        }
 
+        Instantiate(SmallPlatformPrefab, positionOne, Quaternion.identity, transform);
+        Instantiate(SmallPlatformPrefab, positionTwo, Quaternion.identity, transform);
     }
 
     private void SpawnLarge(Vector3 position) {
-
+        lastPos = position;
+        Instantiate(LargePlatformPrefab, position, Quaternion.identity, transform);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollower : MonoBehaviour {
-    public Transform target;
+    public Transform Target;
 
     private Vector3 offset;
 
@@ -12,6 +12,6 @@ public class CameraFollower : MonoBehaviour {
     }
 
     void Update() {
-        transform.position = target.position + offset;
+        transform.position = Target.position + offset;
     }
 }
